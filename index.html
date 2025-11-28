@@ -4,15 +4,40 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>လျှပ်စစ်မီတာဘေလ်စာရင်း</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Padauk:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="container">
-        <div class="header">
+        <header class="header">
             <img src="https://i.imgur.com/P3oA49g.png" alt="Logo" class="logo">
-            <h1>ရန်ကုန်တိုင်းဒေသကြီး - စမ်းချောင်းမြို့နယ်</h1>
-            <h2>မေဃဝတီကျောင်းတိုက်</h2>
-            <h3>လျှပ်စစ်မီတာဘေလ်စာရင်း</h3>
+            <div class="header-text">
+                <h1>ရန်ကုန်တိုင်းဒေသကြီး - စမ်းချောင်းမြို့နယ်</h1>
+                <h2>မေဃဝတီကျောင်းတိုက်</h2>
+                <h3>လျှပ်စစ်မီတာဘေလ်စာရင်း</h3>
+            </div>
+        </header>
+
+        <div class="summary-bar">
+            <span>ပြသထားသော စာရင်းစုစုပေါင်း ဘေလ်ပမာဏ: </span>
+            <span id="totalAmount">0 ကျပ်</span>
+        </div>
+
+        <div class="filter-container">
+            <div class="filter-group">
+                <label for="schoolFilter">ကျောင်းဆောင်အလိုက်ရှာရန်:</label>
+                <select id="schoolFilter" onchange="filterTable()">
+                    <option value="">ကျောင်းအားလုံး</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label for="monthFilter">လအလိုက်ရှာရန်:</label>
+                <select id="monthFilter" onchange="filterTable()">
+                    <option value="">လအားလုံး</option>
+                </select>
+            </div>
         </div>
 
         <div class="table-wrapper">
@@ -26,60 +51,31 @@
                         <th>သုံးစွဲယူနစ်</th>
                         <th>ဘေလ်ပမာဏ (ကျပ်)</th>
                     </tr>
-                    <tr class="filter-row">
-                        <td></td>
-                        <td>
-                            <select id="schoolFilter" onchange="filterTable()">
-                                <option value="">ကျောင်းအားလုံး</option>
-                                <!-- Options will be added by JavaScript -->
-                            </select>
-                        </td>
-                        <td></td>
-                        <td>
-                            <select id="monthFilter" onchange="filterTable()">
-                                <option value="">လအားလုံး</option>
-                                <option value="ဇန်နဝါရီ">ဇန်နဝါရီ</option>
-                                <option value="ဖေဖော်ဝါရီ">ဖေဖော်ဝါရီ</option>
-                                <option value="မတ်">မတ်</option>
-                                <option value="ဧပြီ">ဧပြီ</option>
-                                <option value="မေ">မေ</option>
-                                <option value="ဇွန်">ဇွန်</option>
-                                <option value="ဇူလိုင်">ဇူလိုင်</option>
-                                <option value="ဩဂုတ်">ဩဂုတ်</option>
-                                <option value="စက်တင်ဘာ">စက်တင်ဘာ</option>
-                                <option value="အောက်တိုဘာ">အောက်တိုဘာ</option>
-                                <option value="နိုဝင်ဘာ">နိုဝင်ဘာ</option>
-                                <option value="ဒီဇင်ဘာ">ဒီဇင်ဘာ</option>
-                            </select>
-                        </td>
-                        <td></td>
-                        <td></td>
-                    </tr>
                 </thead>
-                <tbody>
+                <tbody id="table-body">
                     <tr>
-                        <td>1</td>
-                        <td>သုံးထပ်ကျောင်းဆောင်</td>
-                        <td>E-25805</td>
-                        <td>ဇူလိုင်</td>
-                        <td>2486</td>
-                        <td>၆၂၁,၅၀၀</td>
+                        <td data-label="စဉ်">1</td>
+                        <td data-label="ကျောင်း">သုံးထပ်ကျောင်းဆောင်</td>
+                        <td data-label="မီတာအမှတ်">E-25805</td>
+                        <td data-label="ရွေးချယ်ထားသောလ">ဇူလိုင်</td>
+                        <td data-label="သုံးစွဲယူနစ်">2,486</td>
+                        <td data-label="ဘေလ်ပမာဏ (ကျပ်)">621500</td>
                     </tr>
                     <tr>
-                        <td>2</td>
-                        <td>နှစ်ထပ်ကျောင်းဆောင်</td>
-                        <td>1611785438</td>
-                        <td>ဇူလိုင်</td>
-                        <td>1676</td>
-                        <td>၄၁၉,၀၀၀</td>
+                        <td data-label="စဉ်">2</td>
+                        <td data-label="ကျောင်း">နှစ်ထပ်ကျောင်းဆောင်</td>
+                        <td data-label="မီတာအမှတ်">1611785438</td>
+                        <td data-label="ရွေးချယ်ထားသောလ">ဇူလိုင်</td>
+                        <td data-label="သုံးစွဲယူနစ်">1,676</td>
+                        <td data-label="ဘေလ်ပမာဏ (ကျပ်)">419000</td>
                     </tr>
                     <tr>
-                        <td>3</td>
-                        <td>ရွှေဥမင်ကျောင်း</td>
-                        <td>375-018271</td>
-                        <td>ဇူလိုင်</td>
-                        <td>881</td>
-                        <td>၂၂၀,၂၅၀</td>
+                        <td data-label="စဉ်">3</td>
+                        <td data-label="ကျောင်း">ရွှေဥမင်ကျောင်း</td>
+                        <td data-label="မီတာအမှတ်">375-018271</td>
+                        <td data-label="ရွေးချယ်ထားသောလ">ဩဂုတ်</td>
+                        <td data-label="သုံးစွဲယူနစ်">881</td>
+                        <td data-label="ဘေလ်ပမာဏ (ကျပ်)">220250</td>
                     </tr>
                     <!-- Add more data rows here as needed -->
                 </tbody>
