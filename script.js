@@ -1,4 +1,3 @@
-Ko Soe, [11/28/2025 9:50 PM]
 :root {
     --primary-color: #0056b3;
     --secondary-color: #007bff;
@@ -178,7 +177,6 @@ body {
     .header-text h2 { font-size: 1.2em; }
     .controls-container { justify-content: center; }
 
-Ko Soe, [11/28/2025 9:50 PM]
 #bill-table thead { display: none; }
     #bill-table, #bill-table tbody, #bill-table tr, #bill-table td { display: block; width: 100%; }
     #bill-table tr {
@@ -203,3 +201,4 @@ Ko Soe, [11/28/2025 9:50 PM]
         margin-right: 15px;
     }
 }
+
