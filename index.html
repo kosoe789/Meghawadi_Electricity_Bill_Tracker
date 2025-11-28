@@ -10,43 +10,76 @@
     <div class="container">
         <div class="header">
             <img src="https://i.imgur.com/P3oA49g.png" alt="Logo" class="logo">
-            <h1>ရန်ကုန်တိုင်းဒေသကြီး - ဗဟန်းမြို့နယ်</h1>
-            <h2>ပါဠိတက္ကသိုလ်ညောင်တုန်းကျောင်းတိုက်</h2>
+            <h1>ရန်ကုန်တိုင်းဒေသကြီး - စမ်းချောင်းမြို့နယ်</h1>
+            <h2>မေဃဝတီကျောင်းတိုက်</h2>
             <h3>လျှပ်စစ်မီတာဘေလ်စာရင်း</h3>
-        </div>
-
-        <div class="search-container">
-            <input type="text" id="searchInput" onkeyup="searchTable()" placeholder="ကျောင်းဆောင်အမည်၊ မီတာအမှတ် 등으로 검색...">
         </div>
 
         <div class="table-wrapper">
             <table id="bill-table">
                 <thead>
                     <tr>
-                        <th>ကျောင်းဆောင်</th>
-                        <th>စာရင်းအမှတ်</th>
+                        <th>စဉ်</th>
+                        <th>ကျောင်း</th>
                         <th>မီတာအမှတ်</th>
                         <th>ရွေးချယ်ထားသောလ</th>
                         <th>သုံးစွဲယူနစ်</th>
                         <th>ဘေလ်ပမာဏ (ကျပ်)</th>
                     </tr>
+                    <tr class="filter-row">
+                        <td></td>
+                        <td>
+                            <select id="schoolFilter" onchange="filterTable()">
+                                <option value="">ကျောင်းအားလုံး</option>
+                                <!-- Options will be added by JavaScript -->
+                            </select>
+                        </td>
+                        <td></td>
+                        <td>
+                            <select id="monthFilter" onchange="filterTable()">
+                                <option value="">လအားလုံး</option>
+                                <option value="ဇန်နဝါရီ">ဇန်နဝါရီ</option>
+                                <option value="ဖေဖော်ဝါရီ">ဖေဖော်ဝါရီ</option>
+                                <option value="မတ်">မတ်</option>
+                                <option value="ဧပြီ">ဧပြီ</option>
+                                <option value="မေ">မေ</option>
+                                <option value="ဇွန်">ဇွန်</option>
+                                <option value="ဇူလိုင်">ဇူလိုင်</option>
+                                <option value="ဩဂုတ်">ဩဂုတ်</option>
+                                <option value="စက်တင်ဘာ">စက်တင်ဘာ</option>
+                                <option value="အောက်တိုဘာ">အောက်တိုဘာ</option>
+                                <option value="နိုဝင်ဘာ">နိုဝင်ဘာ</option>
+                                <option value="ဒီဇင်ဘာ">ဒီဇင်ဘာ</option>
+                            </select>
+                        </td>
+                        <td></td>
+                        <td></td>
+                    </tr>
                 </thead>
                 <tbody>
                     <tr>
+                        <td>1</td>
                         <td>သုံးထပ်ကျောင်းဆောင်</td>
-                        <td>375-019740</td>
                         <td>E-25805</td>
-                        <td>၇-လပိုင်း</td>
+                        <td>ဇူလိုင်</td>
                         <td>2486</td>
                         <td>၆၂၁,၅၀၀</td>
                     </tr>
                     <tr>
+                        <td>2</td>
                         <td>နှစ်ထပ်ကျောင်းဆောင်</td>
-                        <td>375-018266</td>
                         <td>1611785438</td>
-                        <td>၇-လပိုင်း</td>
+                        <td>ဇူလိုင်</td>
                         <td>1676</td>
                         <td>၄၁၉,၀၀၀</td>
+                    </tr>
+                    <tr>
+                        <td>3</td>
+                        <td>ရွှေဥမင်ကျောင်း</td>
+                        <td>375-018271</td>
+                        <td>ဇူလိုင်</td>
+                        <td>881</td>
+                        <td>၂၂၀,၂၅၀</td>
                     </tr>
                     <!-- Add more data rows here as needed -->
                 </tbody>
