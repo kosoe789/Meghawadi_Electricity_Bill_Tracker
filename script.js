@@ -1,13 +1,34 @@
-function populateSchoolFilter() {
-    const table = document.getElementById("bill-table");
-    const schoolFilter = document.getElementById("schoolFilter");
-    const schools = new Set();
+document.addEventListener('DOMContentLoaded', () => {
+    formatInitialAmounts();
+    populateFilters();
+    calculateTotal();
+});
 
-    // Start from 2 to skip header and filter rows
-    for (let i = 2; i < table.rows.length; i++) {
-        // Column index for school name is 1
-        const schoolName = table.rows[i].cells[1].textContent;
+function formatInitialAmounts() {
+    const tableBody = document.getElementById("table-body");
+    const rows = tableBody.getElementsByTagName("tr");
+    for (let i = 0; i < rows.length; i++) {
+        const amountCell = rows[i].getElementsByTagName("td")[5];
+        if (amountCell) {
+            const amount = parseFloat(amountCell.textContent);
+            amountCell.textContent = amount.toLocaleString('en-US');
+        }
+    }
+}
+
+function populateFilters() {
+    const tableBody = document.getElementById("table-body");
+    const rows = tableBody.getElementsByTagName("tr");
+    const schoolFilter = document.getElementById("schoolFilter");
+    const monthFilter = document.getElementById("monthFilter");
+    const schools = new Set();
+    const months = new Set();
+
+    for (let i = 0; i < rows.length; i++) {
+        const schoolName = rows[i].getElementsByTagName("td")[1].textContent;
+        const monthName = rows[i].getElementsByTagName("td")[3].textContent;
         schools.add(schoolName);
+        months.add(monthName);
     }
 
     schools.forEach(school => {
@@ -16,46 +37,53 @@ function populateSchoolFilter() {
         option.textContent = school;
         schoolFilter.appendChild(option);
     });
+
+    months.forEach(month => {
+        const option = document.createElement("option");
+        option.value = month;
+        option.textContent = month;
+        monthFilter.appendChild(option);
+    });
 }
 
 function filterTable() {
     const schoolFilter = document.getElementById("schoolFilter").value;
     const monthFilter = document.getElementById("monthFilter").value;
-    const table = document.getElementById("bill-table");
-    const tr = table.getElementsByTagName("tr");
+    const tableBody = document.getElementById("table-body");
+    const tr = tableBody.getElementsByTagName("tr");
 
-    // Start from 2 to skip header and filter rows
-    for (let i = 2; i < tr.length; i++) {
+    for (let i = 0; i < tr.length; i++) {
         const schoolCell = tr[i].getElementsByTagName("td")[1];
         const monthCell = tr[i].getElementsByTagName("td")[3];
         
-        if (schoolCell && monthCell) {
-            const schoolMatch = (schoolFilter === "" || schoolCell.textContent === schoolFilter);
-            const monthMatch = (monthFilter === "" || monthCell.textContent === monthFilter);
+        const schoolMatch = (schoolFilter === "" || schoolCell.textContent === schoolFilter);
+        const monthMatch = (monthFilter === "" || monthCell.textContent === monthFilter);
 
-            if (schoolMatch && monthMatch) {
-                tr[i].style.display = "";
-            } else {
-                tr[i].style.display = "none";
+        if (schoolMatch && monthMatch) {
+            tr[i].style.display = "";
+        } else {
+            tr[i].style.display = "none";
+        }
+    }
+    calculateTotal();
+}
+
+function calculateTotal() {
+    const tableBody = document.getElementById("table-body");
+    const rows = tableBody.getElementsByTagName("tr");
+    let total = 0;
+
+    for (let i = 0; i < rows.length; i++) {
+        if (rows[i].style.display !== "none") {
+            const amountCell = rows[i].getElementsByTagName("td")[5];
+            if (amountCell) {
+                const amount = parseFloat(amountCell.textContent.replace(/,/g, ''));
+                if (!isNaN(amount)) {
+                    total += amount;
+                }
             }
         }
     }
+    
+    document.getElementById('totalAmount').textContent = ${total.toLocaleString('en-US')} ကျပ်;
 }
-
-function assignDataLabels() {
-    const table = document.getElementById('bill-table');
-    const headers = Array.from(table.querySelectorAll('thead tr:first-child th')).map(th => th.textContent);
-    const rows = table.querySelectorAll('tbody tr');
-
-    rows.forEach(row => {
-        const cells = row.querySelectorAll('td');
-        cells.forEach((cell, index) => {
-            cell.setAttribute('data-label', headers[index]);
-        });
-    });
-}
-
-document.addEventListener('DOMContentLoaded', () => {
-    populateSchoolFilter();
-    assignDataLabels();
-});
