@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="my">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>လျှပ်စစ်မီတာဘေလ်စာရင်း</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <img src="https://i.imgur.com/P3oA49g.png" alt="Logo" class="logo">
+            <h1>ရန်ကုန်တိုင်းဒေသကြီး - ဗဟန်းမြို့နယ်</h1>
+            <h2>ပါဠိတက္ကသိုလ်ညောင်တုန်းကျောင်းတိုက်</h2>
+            <h3>လျှပ်စစ်မီတာဘေလ်စာရင်း</h3>
+        </div>
+
+        <div class="search-container">
+            <input type="text" id="searchInput" onkeyup="searchTable()" placeholder="ကျောင်းဆောင်အမည်၊ မီတာအမှတ် 등으로 검색...">
+        </div>
+
+        <div class="table-wrapper">
+            <table id="bill-table">
+                <thead>
+                    <tr>
+                        <th>ကျောင်းဆောင်</th>
+                        <th>စာရင်းအမှတ်</th>
+                        <th>မီတာအမှတ်</th>
+                        <th>ရွေးချယ်ထားသောလ</th>
+                        <th>သုံးစွဲယူနစ်</th>
+                        <th>ဘေလ်ပမာဏ (ကျပ်)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>သုံးထပ်ကျောင်းဆောင်</td>
+                        <td>375-019740</td>
+                        <td>E-25805</td>
+                        <td>၇-လပိုင်း</td>
+                        <td>2486</td>
+                        <td>၆၂၁,၅၀၀</td>
+                    </tr>
+                    <tr>
+                        <td>နှစ်ထပ်ကျောင်းဆောင်</td>
+                        <td>375-018266</td>
+                        <td>1611785438</td>
+                        <td>၇-လပိုင်း</td>
+                        <td>1676</td>
+                        <td>၄၁၉,၀၀၀</td>
+                    </tr>
+                    <!-- Add more data rows here as needed -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
