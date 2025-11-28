@@ -1,177 +1,89 @@
-:root {
-    --primary-color: #0056b3;
-    --secondary-color: #007bff;
-    --background-color: #f8f9fa;
-    --table-header-bg: #343a40;
-    --card-bg: #ffffff;
-    --text-color: #333;
-    --border-color: #dee2e6;
-    --shadow: 0 4px 8px rgba(0,0,0,0.1);
-}
+document.addEventListener('DOMContentLoaded', () => {
+    formatInitialAmounts();
+    populateFilters();
+    calculateTotal();
+});
 
-body {
-    font-family: 'Padauk', sans-serif;
-    background-color: var(--background-color);
-    margin: 0;
-    padding: 20px;
-    color: var(--text-color);
-}
-
-.container {
-    max-width: 1100px;
-    margin: auto;
-    background: var(--card-bg);
-    padding: 25px;
-    border-radius: 12px;
-    box-shadow: var(--shadow);
-}
-
-.header {
-    display: flex;
-    align-items: center;
-    text-align: left;
-    margin-bottom: 25px;
-    padding-bottom: 20px;
-    border-bottom: 2px solid var(--primary-color);
-}
-
-.logo {
-    width: 70px;
-    height: 70px;
-    margin-right: 20px;
-}
-
-.header-text h1, .header-text h2, .header-text h3 {
-    margin: 0;
-}
-.header-text h1 { font-size: 1.6em; color: var(--primary-color); font-weight: 700; }
-.header-text h2 { font-size: 1.3em; }
-.header-text h3 { font-size: 1.1em; color: #555; }
-
-.summary-bar {
-    background: linear-gradient(135deg, #e9f5ff, #d4eaff);
-    border-left: 5px solid var(--secondary-color);
-    color: var(--primary-color);
-    padding: 18px 25px;
-    margin-bottom: 25px;
-    border-radius: 8px;
-    text-align: center;
-    font-size: 1.2em;
-    font-weight: 700;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-}
-#totalAmount {
-    display: inline-block;
-    margin-left: 10px;
-    background-color: var(--secondary-color);
-    color: white;
-    padding: 5px 12px;
-    border-radius: 20px;
-}
-
-.filter-container {
-    display: flex;
-    gap: 20px;
-    margin-bottom: 25px;
-    flex-wrap: wrap;
-}
-.filter-group {
-    flex: 1;
-    min-width: 250px;
-}
-.filter-group label {
-    display: block;
-    margin-bottom: 8px;
-    font-weight: 700;
-    color: #555;
-}
-.filter-group select {
-    width: 100%;
-    padding: 12px;
-    border: 1px solid var(--border-color);
-    border-radius: 8px;
-    background-color: #fff;
-    font-family: 'Padauk', sans-serif;
-    font-size: 1em;
-    transition: border-color 0.3s, box-shadow 0.3s;
-}
-.filter-group select:focus {
-    outline: none;
-    border-color: var(--secondary-color);
-    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25);
-}
-
-.table-wrapper {
-    overflow-x: auto;
-}
-
-#bill-table {
-    width: 100%;
-    border-collapse: collapse;
-}
-
-#bill-table th, #bill-table td {
-    padding: 15px;
-    text-align: left;
-    border-bottom: 1px solid var(--border-color);
-}
-
-#bill-table th {
-    background-color: var(--table-header-bg);
-    color: white;
-    font-weight: 700;
-    white-space: nowrap;
-}
-
-#bill-table tbody tr {
-    transition: background-color 0.3s;
-}
-
-#bill-table tbody tr:nth-child(even) {
-    background-color: #f8f9fa;
-}
-
-#bill-table tbody tr:hover {
-    background-color: #e9ecef;
-}
-
-/* Responsive Card Design for Mobile */
-@media screen and (max-width: 768px) {
-    #bill-table thead {
-        display: none;
+function formatInitialAmounts() {
+    const tableBody = document.getElementById("table-body");
+    const rows = tableBody.getElementsByTagName("tr");
+    for (let i = 0; i < rows.length; i++) {
+        const amountCell = rows[i].getElementsByTagName("td")[5];
+        if (amountCell) {
+            const amount = parseFloat(amountCell.textContent);
+            amountCell.textContent = amount.toLocaleString('en-US');
+        }
     }
-    #bill-table, #bill-table tbody, #bill-table tr, #bill-table td {
-        display: block;
-        width: 100%;
+}
+
+function populateFilters() {
+    const tableBody = document.getElementById("table-body");
+    const rows = tableBody.getElementsByTagName("tr");
+    const schoolFilter = document.getElementById("schoolFilter");
+    const monthFilter = document.getElementById("monthFilter");
+    const schools = new Set();
+    const months = new Set();
+
+    for (let i = 0; i < rows.length; i++) {
+        const schoolName = rows[i].getElementsByTagName("td")[1].textContent;
+        const monthName = rows[i].getElementsByTagName("td")[3].textContent;
+        schools.add(schoolName);
+        months.add(monthName);
     }
-    #bill-table tr {
-        background-color: var(--card-bg);
-        border: 1px solid var(--border-color);
-        border-radius: 8px;
-        margin-bottom: 15px;
-        box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-        padding: 10px;
+
+    schools.forEach(school => {
+        const option = document.createElement("option");
+        option.value = school;
+        option.textContent = school;
+        schoolFilter.appendChild(option);
+    });
+
+    months.forEach(month => {
+        const option = document.createElement("option");
+        option.value = month;
+        option.textContent = month;
+        monthFilter.appendChild(option);
+    });
+}
+
+function filterTable() {
+    const schoolFilter = document.getElementById("schoolFilter").value;
+    const monthFilter = document.getElementById("monthFilter").value;
+    const tableBody = document.getElementById("table-body");
+    const tr = tableBody.getElementsByTagName("tr");
+
+    for (let i = 0; i < tr.length; i++) {
+        const schoolCell = tr[i].getElementsByTagName("td")[1];
+        const monthCell = tr[i].getElementsByTagName("td")[3];
+        
+        const schoolMatch = (schoolFilter === "" || schoolCell.textContent === schoolFilter);
+        const monthMatch = (monthFilter === "" || monthCell.textContent === monthFilter);
+
+        if (schoolMatch && monthMatch) {
+            tr[i].style.display = "";
+        } else {
+            tr[i].style.display = "none";
+        }
     }
-    #bill-table td {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 10px 5px;
-        border: none;
-        border-bottom: 1px dashed #eee;
+    calculateTotal();
+}
+
+function calculateTotal() {
+    const tableBody = document.getElementById("table-body");
+    const rows = tableBody.getElementsByTagName("tr");
+    let total = 0;
+
+    for (let i = 0; i < rows.length; i++) {
+        if (rows[i].style.display !== "none") {
+            const amountCell = rows[i].getElementsByTagName("td")[5];
+            if (amountCell) {
+                const amount = parseFloat(amountCell.textContent.replace(/,/g, ''));
+                if (!isNaN(amount)) {
+                    total += amount;
+                }
+            }
+        }
     }
-    #bill-table td:last-child {
-        border-bottom: none;
-    }
-    #bill-table td:before {
-        content: attr(data-label);
-        font-weight: 700;
-        color: var(--primary-color);
-        white-space: nowrap;
-        margin-right: 15px;
-    }
-    #bill-table td[data-label="ဘေလ်ပမာဏ (ကျပ်)"] {
-        font-size: 1.1em;
-        font-weight: bold;
-    }
+    
+    document.getElementById('totalAmount').textContent = ${total.toLocaleString('en-US')} ကျပ်;
 }
