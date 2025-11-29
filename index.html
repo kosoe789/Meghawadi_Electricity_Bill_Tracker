@@ -7,10 +7,13 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Padauk:wght@400;700&display=swap" rel="stylesheet">
+    <!-- This links to your stylesheet -->
     <link rel="stylesheet" href="./style.css">
 </head>
 <body>
+    <!-- Main container for the entire page content -->
     <div class="container">
+        <!-- Header Section with Logos and Titles -->
         <header class="header">
             <img src="https://i.imgur.com/P3oA49g.png" alt="Logo Left" class="logo">
             <div class="header-text">
@@ -21,6 +24,7 @@
             <img src="https://i.imgur.com/P3oA49g.png" alt="Logo Right" class="logo">
         </header>
 
+        <!-- Container for controls like the total amount display -->
         <div class="controls-container">
             <div class="total-display">
                 <span>စုစုပေါင်း ဘေလ်ပမာဏ: </span>
@@ -28,19 +32,28 @@
             </div>
         </div>
 
+        <!-- Wrapper for the main data table -->
         <div class="table-wrapper">
             <table id="bill-table">
                 <thead>
+                    <!-- Main table header row -->
                     <tr>
                         <th>စဉ်</th>
+                        <th>နှစ်</th>
                         <th>ကျောင်း</th>
                         <th>မီတာအမှတ်</th>
                         <th>ရွေးချယ်ထားသောလ</th>
                         <th>သုံးစွဲယူနစ်</th>
                         <th>ဘေလ်ပမာဏ (ကျပ်)</th>
                     </tr>
+                    <!-- Filter row with dropdowns -->
                     <tr class="filter-row">
                         <td></td>
+                        <td>
+                            <select id="yearFilter" onchange="filterTable()">
+                                <option value="">နှစ်အားလုံး</option>
+                            </select>
+                        </td>
                         <td>
                             <select id="schoolFilter" onchange="filterTable()">
                                 <option value="">ကျောင်းအားလုံး</option>
@@ -56,21 +69,22 @@
                         <td></td>
                     </tr>
                 </thead>
-                <!-- Data will be loaded here from Google Sheets -->
+                <!-- Table body where data from Google Sheets will be loaded -->
                 <tbody id="table-body">
                     <tr>
-                        <td colspan="6" class="loading-cell">ဒေတာများ ရယူနေပါသည်...</td>
+                        <td colspan="7" class="loading-cell">ဒေတာများ ရယူနေပါသည်...</td>
                     </tr>
                 </tbody>
             </table>
         </div>
     </div>
 
+    <!-- Footer section for additional notes and calculation examples -->
     <footer class="footer-notes">
-        <!-- Footer content remains the same -->
         <div class="notes-container">
             <h4>မီတာခ နှုန်းထားများ နှင့် တွက်ချက်ပုံ နမူနာ</h4>
             <div class="notes-grid">
+                <!-- Rate Table -->
                 <div class="rate-table">
                     <p><strong>သုံးစွဲယူနစ် အဆင့် နှင့် နှုန်းထား (တစ်ယူနစ်)</strong></p>
                     <ul>
@@ -80,6 +94,7 @@
                         <li><span>201 ယူနစ် နှင့် အထက်</span><span>300 ကျပ်</span></li>
                     </ul>
                 </div>
+                <!-- Calculation Example Table -->
                 <div class="calculation-table">
                      <p><strong>တွက်ချက်ပုံနမူနာ (ဥပမာ: ၃၉၁ ယူနစ်)</strong></p>
                     <table>
@@ -127,6 +142,7 @@
         </div>
     </footer>
 
+    <!-- This links to your JavaScript file -->
     <script src="./script.js"></script>
 </body>
 </html>
