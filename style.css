@@ -1,13 +1,16 @@
 :root {
-    --primary-color: #0d47a1; /* Deeper Blue */
-    --secondary-color: #1976d2; /* Lighter Blue */
-    --background-color: #f4f6f9; /* Light Grey-Blue */
+    --primary-color: #0d47a1;
+    --secondary-color: #1976d2;
+    --background-color: #f4f6f9;
     --card-bg: #ffffff;
     --text-color: #212529;
     --border-color: #e0e0e0;
     --header-bg-gradient: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
-    --table-header-bg: #2c3e50; /* Dark Blue-Gray */
-    --total-label-color: #d32f2f; /* Red for total label */
+    /* === UPDATED: Table header color to Purple === */
+    --table-header-bg: #6a1b9a; /* Deep Purple */
+    --total-label-color: #d32f2f;
+    /* === NEW: Gold color for marquee === */
+    --gold-color: #FFD700; 
     --shadow: 0 6px 18px rgba(0,0,0,0.1);
 }
 
@@ -16,7 +19,7 @@ body {
     background-color: var(--background-color);
     margin: 0;
     color: var(--text-color);
-    font-size: 16px; /* Base font size increased */
+    font-size: 16px;
 }
 
 .container {
@@ -28,7 +31,6 @@ body {
     box-shadow: var(--shadow);
 }
 
-/* === UPDATED HEADER === */
 .header {
     display: flex;
     justify-content: space-between;
@@ -54,7 +56,6 @@ body {
 .header-text h2 { font-size: 1.6em; margin-top: 5px; opacity: 0.9; }
 .header-text h3 { font-size: 1.3em; margin-top: 5px; opacity: 0.8; }
 
-/* === UPDATED CONTROLS CONTAINER === */
 .controls-container {
     display: flex;
     justify-content: space-between;
@@ -66,26 +67,30 @@ body {
     border-radius: 10px;
 }
 
-/* === NEW MARQUEE STYLE === */
+/* === UPDATED MARQUEE STYLE === */
 .marquee-container {
     flex-grow: 1;
     overflow: hidden;
     white-space: nowrap;
     position: relative;
+    padding: 10px 0; /* Add padding for larger font */
 }
 .marquee-text {
     display: inline-block;
     padding-left: 100%;
     animation: marquee 25s linear infinite;
     font-weight: 700;
-    color: var(--primary-color);
+    /* 1. Font size 3x larger */
+    font-size: 3em; 
+    /* 2. Color to Gold */
+    color: var(--gold-color);
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.5); /* Add shadow for better readability */
 }
 @keyframes marquee {
     0%   { transform: translateX(0); }
     100% { transform: translateX(-100%); }
 }
 
-/* === UPDATED TOTAL DISPLAY === */
 .total-display {
     background-color: #ffffff;
     padding: 12px 22px;
@@ -96,7 +101,7 @@ body {
 }
 .total-label {
     color: var(--total-label-color);
-    font-weight: 700; /* Bold */
+    font-weight: 700;
 }
 .total-display strong {
     margin-left: 8px;
@@ -106,19 +111,21 @@ body {
 .table-wrapper { overflow-x: auto; }
 #bill-table { width: 100%; border-collapse: collapse; }
 
+/* === UPDATED: Center all table text === */
 #bill-table th, #bill-table td {
     padding: 15px;
-    text-align: left;
     border: 1px solid var(--border-color);
     white-space: nowrap;
-    font-weight: 700; /* Bold for all table text */
+    font-weight: 700;
+    /* Center text horizontally and vertically */
+    text-align: center;
+    vertical-align: middle;
 }
 
-/* === UPDATED TABLE HEADER === */
+/* === UPDATED: Table header color to Purple === */
 #bill-table th {
     background-color: var(--table-header-bg);
     color: white;
-    text-align: center;
     font-size: 1.1em;
 }
 
@@ -135,10 +142,9 @@ body {
 }
 .filter-row td { padding: 8px; background-color: #f8f9fa; }
 
-/* === UPDATED FOOTER === */
 .footer-notes {
     background-color: #f8f9fa;
-    margin: 30px -30px -30px -30px; /* Extend to container edges */
+    margin: 30px -30px -30px -30px;
     padding: 40px 30px;
     border-bottom-left-radius: 16px;
     border-bottom-right-radius: 16px;
