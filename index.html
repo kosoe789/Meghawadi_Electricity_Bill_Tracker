@@ -11,6 +11,7 @@
 </head>
 <body>
     <div class="container">
+        <!-- Header Section -->
         <header class="header">
             <img src="./bd.jpg" alt="Buddha Image" class="logo">
             <div class="header-text">
@@ -21,12 +22,11 @@
             <img src="./sd.jpg" alt="Monk Image" class="logo">
         </header>
 
-        <!-- === UPDATED CONTROLS CONTAINER === -->
+        <!-- Controls Container -->
         <div class="controls-container">
             <div class="marquee-container">
-                <p class="marquee-text">ဦးကျော် + ဒေါ်မီးမီး၊ ဆင်မလိုက်ရပ်ကွက်၊ ကြည့်မြင်တိုင်မြို့နယ်မှ လစဉ်လျှပ်စစ် အလင်းကုသိုလ် ပြုကြပါသည်။</p>
+                <p class="marquee-text">ကျောင်းအလှူရှင်မိသားစု၊ ဆင်မလိုက်၊ ကြည့်မြင်တိုင်မြို့နယ်မှ ရာသက်ပန်လျှပ်စစ် အလင်းကုသိုလ် ပြုကြပါသည်။</p>
             </div>
-            <!-- Year Selector is moved here -->
             <div class="year-selector">
                 <label for="yearSheetSelector">နှစ်ရွေးချယ်ရန်:</label>
                 <select id="yearSheetSelector"></select>
@@ -37,7 +37,7 @@
             </div>
         </div>
 
-        <!-- === UPDATED TABLE STRUCTURE === -->
+        <!-- Main Data Table Wrapper -->
         <div class="table-wrapper">
             <table id="bill-table">
                 <thead>
@@ -45,7 +45,7 @@
                         <th>စဉ်</th>
                         <th>ကျောင်း</th>
                         <th>မီတာအမှတ်</th>
-                        <th>ရွေးချယ်ထားသောလ</th>
+                        <th>လစဥ်</th>
                         <th>သုံးစွဲယူနစ်</th>
                         <th>ဘေလ်ပမာဏ (ကျပ်)</th>
                     </tr>
@@ -67,11 +67,68 @@
         </div>
     </div>
 
+    <!-- === FOOTER SECTION (RE-ADDED) === -->
     <footer class="footer-notes">
-        <!-- Footer content remains the same -->
+        <div class="notes-container">
+            <h4>မီတာခ နှုန်းထားများ နှင့် တွက်ချက်ပုံ နမူနာ</h4>
+            <div class="notes-grid">
+                <div class="rate-table">
+                    <p><strong>သုံးစွဲယူနစ် အဆင့် နှင့် နှုန်းထား (တစ်ယူနစ်)</strong></p>
+                    <ul>
+                        <li><span>1 – 50 ယူနစ်</span><span>50 ကျပ်</span></li>
+                        <li><span>51 – 100 ယူနစ်</span><span>100 ကျပ်</span></li>
+                        <li><span>101 – 200 ယူနစ်</span><span>150 ကျပ်</span></li>
+                        <li><span>201 ယူနစ် နှင့် အထက်</span><span>300 ကျပ်</span></li>
+                    </ul>
+                </div>
+                <div class="calculation-table">
+                     <p><strong>တွက်ချက်ပုံနမူနာ (ဥပမာ: ၃၉၁ ယူနစ်)</strong></p>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>အဆင့်</th>
+                                <th>ယူနစ်</th>
+                                <th>နှုန်းထား</th>
+                                <th>ကျသင့်ငွေ</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>အဆင့် (၁)</td>
+                                <td>50</td>
+                                <td>50 Ks</td>
+                                <td>2,500 Ks</td>
+                            </tr>
+                            <tr>
+                                <td>အဆင့် (၂)</td>
+                                <td>50</td>
+                                <td>100 Ks</td>
+                                <td>5,000 Ks</td>
+                            </tr>
+                            <tr>
+                                <td>အဆင့် (၃)</td>
+                                <td>100</td>
+                                <td>150 Ks</td>
+                                <td>15,000 Ks</td>
+                            </tr>
+                            <tr>
+                                <td>အဆင့် (၄)</td>
+                                <td>191</td>
+                                <td>300 Ks</td>
+                                <td>57,300 Ks</td>
+                            </tr>
+                            <tr class="total-row">
+                                <td colspan="3">စုစုပေါင်း (၃၉၁ ယူနစ်)</td>
+                                <td>79,800 Ks</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
     </footer>
+    <!-- ================================= -->
 
     <script src="./script.js"></script>
 </body>
 </html>
-
