@@ -1,137 +1,122 @@
-// Wait for the entire HTML document to be fully loaded and parsed
+// --- CONFIGURATION ---
+// 1. Replace 'YOUR_SHEET_ID' with your actual Google Sheet ID from Step 1.
+const SHEET_ID = '1wgIlwrkbgiajopkWul-_y5ghskVwjxmiS-SVKR2DGJI'; 
+// 2. Replace '0' if your GID is different.
+const GID = '0'; 
+// -------------------
+
+const sheetURL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&gid=${GID}`;
+
 document.addEventListener('DOMContentLoaded', () => {
-    // Step 1: Populate the dropdown filters with data from the table and predefined lists
-    populateFilters();
-    
-    // Step 2: Format numbers and prepare data for calculation
-    prepareTableData(); 
-    
-    // Step 3: Calculate the initial total amount
-    calculateTotal(); 
+    fetch(sheetURL)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.text();
+        })
+        .then(csvText => {
+            const data = parseCSV(csvText);
+            populateTable(data);
+            populateFilters(data);
+            calculateTotal();
+        })
+        .catch(error => {
+            console.error('Error fetching or parsing Google Sheet:', error);
+            const tableBody = document.getElementById('table-body');
+            tableBody.innerHTML = '<tr><td colspan="6" class="loading-cell" style="color: red;">Error: Google Sheet မှ ဒေတာများ ရယူ၍မရပါ။ Sheet ID မှန်ကန်မှု နှင့် Share setting ကိုစစ်ဆေးပါ။</td></tr>';
+        });
 });
 
-/**
- * Reads data from the HTML table for schools and uses a predefined list for months
- * to populate the dropdown filters.
- */
-function populateFilters() {
-    const tableBody = document.getElementById("table-body");
-    if (!tableBody) return; // Exit if table body doesn't exist
+function parseCSV(text) {
+    // Split into rows, and remove the header row (slice(1))
+    const rows = text.trim().split('\n').slice(1);
+    return rows.map(row => {
+        // This regex handles commas inside quoted fields
+        const values = row.match(/(".*?"|[^",]+)(?=\s*,|\s*$)/g) || [];
+        // Remove quotes from each value
+        return values.map(value => value.replace(/"/g, '').trim());
+    });
+}
 
-    const rows = tableBody.getElementsByTagName("tr");
+function populateTable(data) {
+    const tableBody = document.getElementById('table-body');
+    tableBody.innerHTML = ''; // Clear "Loading..." message
+
+    if (data.length === 0) {
+        tableBody.innerHTML = '<tr><td colspan="6" class="loading-cell">ဒေတာ မရှိသေးပါ။</td></tr>';
+        return;
+    }
+
+    data.forEach(row => {
+        if (row.length < 6) return; // Skip empty or malformed rows
+        
+        const tr = document.createElement('tr');
+        const rawAmount = parseFloat(row[5]);
+        const formattedUnit = parseFloat(row[4]).toLocaleString('en-US');
+        const formattedAmount = !isNaN(rawAmount) ? rawAmount.toLocaleString('en-US') : 'N/A';
+
+        tr.innerHTML = `
+            <td data-label="စဉ်">${row[0]}</td>
+            <td data-label="ကျောင်း">${row[1]}</td>
+            <td data-label="မီတာအမှတ်">${row[2]}</td>
+            <td data-label="ရွေးချယ်ထားသောလ">${row[3]}</td>
+            <td data-label="သုံးစွဲယူနစ်">${formattedUnit}</td>
+            <td data-label="ဘေလ်ပမာဏ (ကျပ်)" data-amount="${rawAmount}">${formattedAmount}</td>
+        `;
+        tableBody.appendChild(tr);
+    });
+}
+
+function populateFilters(data) {
     const schoolFilter = document.getElementById("schoolFilter");
     const monthFilter = document.getElementById("monthFilter");
     
-    // --- MONTHS ---
-    // Use a predefined, complete list of all 12 months.
-    const allMonths = [
-        "ဇန်နဝါရီ", "ဖေဖော်ဝါရီ", "မတ်", "ဧပြီ", "မေ", "ဇွန်",
-        "ဇူလိုင်", "ဩဂုတ်", "စက်တင်ဘာ", "အောက်တိုဘာ", "နိုဝင်ဘာ", "ဒီဇင်ဘာ"
-    ];
+    const allMonths = ["ဇန်နဝါရီ", "ဖေဖော်ဝါရီ", "မတ်", "ဧပြီ", "မေ", "ဇွန်", "ဇူလိုင်", "ဩဂုတ်", "စက်တင်ဘာ", "အောက်တိုဘာ", "နိုဝင်ဘာ", "ဒီဇင်ဘာ"];
+    const schools = new Set(data.map(row => row[1]).filter(Boolean));
 
-    // --- SCHOOLS ---
-    // Use a Set to automatically get unique school names from the table.
-    const schools = new Set();
-    for (let i = 0; i < rows.length; i++) {
-        const cells = rows[i].getElementsByTagName("td");
-        if (cells.length > 1) { 
-            const schoolName = cells[1].textContent.trim();
-            if (schoolName) schools.add(schoolName);
-        }
-    }
-
-    // --- POPULATE DROPDOWNS ---
-    // Clear previous options
     schoolFilter.innerHTML = '<option value="">ကျောင်းအားလုံး</option>';
     monthFilter.innerHTML = '<option value="">လအားလုံး</option>';
 
-    // Add all unique school names to the school dropdown
     schools.forEach(school => {
-        const option = document.createElement("option");
-        option.value = school;
-        option.textContent = school;
-        schoolFilter.appendChild(option);
+        schoolFilter.add(new Option(school, school));
     });
-
-    // Add all 12 months to the month dropdown
     allMonths.forEach(month => {
-        const option = document.createElement("option");
-        option.value = month;
-        option.textContent = month;
-        monthFilter.appendChild(option);
+        monthFilter.add(new Option(month, month));
     });
 }
 
-/**
- * Prepares table data by formatting numbers for display and storing
- * original values for calculation.
- */
-function prepareTableData() {
-    const tableBody = document.getElementById("table-body");
-    if (!tableBody) return;
-
-    const rows = tableBody.getElementsByTagName("tr");
-    for (let i = 0; i < rows.length; i++) {
-        const cells = rows[i].getElementsByTagName("td");
-        if (cells.length > 5) {
-            const amountCell = cells[5];
-            const rawAmount = parseFloat(amountCell.textContent.replace(/,/g, ''));
-            if (!isNaN(rawAmount)) {
-                amountCell.setAttribute('data-amount', rawAmount);
-                amountCell.textContent = rawAmount.toLocaleString('en-US');
-            }
-        }
-    }
-}
-
-/**
- * Filters the table rows based on the selected dropdown values.
- */
 function filterTable() {
     const schoolFilter = document.getElementById("schoolFilter").value;
     const monthFilter = document.getElementById("monthFilter").value;
     const tableBody = document.getElementById("table-body");
-    if (!tableBody) return;
-
     const tr = tableBody.getElementsByTagName("tr");
 
     for (let i = 0; i < tr.length; i++) {
-        const cells = tr[i].getElementsByTagName("td");
-        if (cells.length > 3) {
-            const schoolCell = cells[1];
-            const monthCell = cells[3];
-            
-            const schoolMatch = (schoolFilter === "" || schoolCell.textContent.trim() === schoolFilter);
-            const monthMatch = (monthFilter === "" || monthCell.textContent.trim() === monthFilter);
+        const schoolCell = tr[i].cells[1];
+        const monthCell = tr[i].cells[3];
+        
+        const schoolMatch = (schoolFilter === "" || schoolCell.textContent.trim() === schoolFilter);
+        const monthMatch = (monthFilter === "" || monthCell.textContent.trim() === monthFilter);
 
-            tr[i].style.display = (schoolMatch && monthMatch) ? "" : "none";
-        }
+        tr[i].style.display = (schoolMatch && monthMatch) ? "" : "none";
     }
     calculateTotal(); 
 }
 
-/**
- * Calculates the total amount of all VISIBLE rows in the table.
- */
 function calculateTotal() {
-    const tableBody = document.getElementById("table-body");
-    if (!tableBody) return;
-
-    const rows = tableBody.getElementsByTagName("tr");
+    const rows = document.querySelectorAll("#table-body tr");
     let total = 0;
 
-    for (let i = 0; i < rows.length; i++) {
-        if (rows[i].style.display !== "none") {
-            const cells = rows[i].getElementsByTagName("td");
-            if (cells.length > 5) {
-                const amountCell = cells[5];
-                const amount = parseFloat(amountCell.getAttribute('data-amount'));
-                if (!isNaN(amount)) {
-                    total += amount;
-                }
+    rows.forEach(row => {
+        if (row.style.display !== "none") {
+            const amountCell = row.cells[5];
+            const amount = parseFloat(amountCell.getAttribute('data-amount'));
+            if (!isNaN(amount)) {
+                total += amount;
             }
         }
-    }
+    });
     
     document.getElementById('totalAmount').textContent = `${total.toLocaleString('en-US')} ကျပ်`;
 }
