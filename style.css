@@ -10,7 +10,7 @@
     --table-header-bg: #6a1b9a; /* Deep Purple */
     --total-label-color: #d32f2f;
     /* === NEW: Gold color for marquee === */
-    --gold-color: #FFD700; 
+    --gold-color: #ff00bf; 
     --shadow: 0 6px 18px rgba(0,0,0,0.1);
 }
 
@@ -213,5 +213,6 @@ body {
     #bill-table td:last-child { border-bottom: none; }
     #bill-table td:before { content: attr(data-label); font-weight: 700; color: var(--primary-color); white-space: nowrap; margin-right: 15px; }
 }
+
 
 
