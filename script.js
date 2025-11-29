@@ -1,204 +1,89 @@
-:root {
-    --primary-color: #0056b3;
-    --secondary-color: #007bff;
-    --background-color: #f0f2f5;
-    --card-bg: #ffffff;
-    --text-color: #333;
-    --border-color: #dee2e6;
-    --shadow: 0 4px 12px rgba(0,0,0,0.08);
-}
+document.addEventListener('DOMContentLoaded', () => {
+    formatInitialAmounts();
+    populateFilters();
+    calculateTotal();
+});
 
-body {
-    font-family: 'Padauk', sans-serif;
-    background-color: var(--background-color);
-    margin: 0;
-    color: var(--text-color);
-}
-
-.container {
-    max-width: 1200px;
-    margin: 30px auto;
-    background: var(--card-bg);
-    padding: 30px;
-    border-radius: 12px;
-    box-shadow: var(--shadow);
-}
-
-.header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    text-align: center;
-    margin-bottom: 20px;
-    padding-bottom: 20px;
-    border-bottom: 2px solid var(--primary-color);
-}
-
-.logo {
-    width: 65px;
-    height: 65px;
-}
-
-.header-text h1, .header-text h2, .header-text h3 { margin: 0; }
-.header-text h1 { font-size: 1.8em; color: var(--primary-color); font-weight: 700; }
-.header-text h2 { font-size: 1.5em; margin-top: 5px; }
-.header-text h3 { font-size: 1.2em; color: #555; margin-top: 5px; }
-
-.controls-container {
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-    margin-bottom: 15px;
-}
-
-.total-display {
-    background-color: #e9ecef;
-    padding: 10px 20px;
-    border-radius: 8px;
-    font-size: 1.1em;
-    font-weight: 700;
-    color: var(--primary-color);
-}
-.total-display strong {
-    margin-left: 8px;
-}
-
-.table-wrapper {
-    overflow-x: auto;
-}
-
-#bill-table {
-    width: 100%;
-    border-collapse: collapse;
-}
-
-#bill-table th, #bill-table td {
-    padding: 14px;
-    text-align: left;
-    border: 1px solid var(--border-color);
-    white-space: nowrap;
-}
-
-#bill-table th {
-    background-color: #343a40;
-    color: white;
-    font-weight: 700;
-    text-align: center; /* Center align header text */
-}
-
-#bill-table tbody tr:nth-child(even) { background-color: #f8f9fa; }
-#bill-table tbody tr:hover { background-color: #e9ecef; }
-
-.filter-row select {
-    width: 100%;
-    padding: 8px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    font-family: 'Padauk', sans-serif;
-}
-.filter-row td {
-    padding: 8px;
-    background-color: #f8f9fa;
-}
-
-/* Footer Notes Section */
-.footer-notes {
-    background-color: var(--card-bg);
-    margin-top: 30px;
-    padding: 30px;
-}
-.notes-container {
-    max-width: 1200px;
-    margin: 0 auto;
-}
-.notes-container h4 {
-    text-align: center;
-    font-size: 1.5em;
-    color: var(--primary-color);
-    margin-top: 0;
-    margin-bottom: 25px;
-}
-.notes-grid {
-    display: grid;
-    grid-template-columns: 1fr 1.5fr;
-    gap: 30px;
-}
-.rate-table, .calculation-table {
-    border: 1px solid var(--border-color);
-    padding: 20px;
-    border-radius: 8px;
-    background-color: #fdfdff;
-}
-.rate-table p, .calculation-table p {
-    margin-top: 0;
-    font-weight: 700;
-    text-align: center;
-    border-bottom: 1px solid #eee;
-    padding-bottom: 10px;
-    margin-bottom: 15px;
-}
-.rate-table ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-}
-.rate-table li {
-    display: flex;
-    justify-content: space-between;
-    padding: 10px 5px;
-    border-bottom: 1px dashed #eee;
-}
-.rate-table li:last-child { border-bottom: none; }
-.rate-table li span:last-child { font-weight: bold; }
-
-.calculation-table table {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 0.95em;
-}
-.calculation-table th, .calculation-table td {
-    border: 1px solid #ddd;
-    padding: 8px;
-    text-align: center;
-}
-.calculation-table th { background-color: #f2f2f2; }
-.calculation-table .total-row { font-weight: bold; background-color: #e9f5ff; }
-
-/* Responsive Design */
-@media screen and (max-width: 992px) {
-    .notes-grid {
-        grid-template-columns: 1fr;
-    }
-}
-@media screen and (max-width: 768px) {
-    .header { flex-direction: column; }
-    .logo { margin-bottom: 15px; }
-    .header-text h1 { font-size: 1.5em; }
-    .header-text h2 { font-size: 1.2em; }
-    .controls-container { justify-content: center; }
-
-#bill-table thead { display: none; }
-    #bill-table, #bill-table tbody, #bill-table tr, #bill-table td { display: block; width: 100%; }
-    #bill-table tr {
-        border: 1px solid var(--border-color);
-        border-radius: 8px;
-        margin-bottom: 15px;
-        padding: 10px;
-    }
-    #bill-table td {
-        display: flex;
-        justify-content: space-between;
-        padding: 12px 5px;
-        border: none;
-        border-bottom: 1px dashed #eee;
-    }
-    #bill-table td:last-child { border-bottom: none; }
-    #bill-table td:before {
-        content: attr(data-label);
-        font-weight: 700;
-        color: var(--primary-color);
-        white-space: nowrap;
-        margin-right: 15px;
+function formatInitialAmounts() {
+    const tableBody = document.getElementById("table-body");
+    const rows = tableBody.getElementsByTagName("tr");
+    for (let i = 0; i < rows.length; i++) {
+        const amountCell = rows[i].getElementsByTagName("td")[5];
+        if (amountCell) {
+            const amount = parseFloat(amountCell.textContent);
+            amountCell.textContent = amount.toLocaleString('en-US');
+        }
     }
 }
 
+function populateFilters() {
+    const tableBody = document.getElementById("table-body");
+    const rows = tableBody.getElementsByTagName("tr");
+    const schoolFilter = document.getElementById("schoolFilter");
+    const monthFilter = document.getElementById("monthFilter");
+    const schools = new Set();
+    const months = new Set();
+
+    for (let i = 0; i < rows.length; i++) {
+        const schoolName = rows[i].getElementsByTagName("td")[1].textContent;
+        const monthName = rows[i].getElementsByTagName("td")[3].textContent;
+        schools.add(schoolName);
+        months.add(monthName);
+    }
+
+    schools.forEach(school => {
+        const option = document.createElement("option");
+        option.value = school;
+        option.textContent = school;
+        schoolFilter.appendChild(option);
+    });
+
+    months.forEach(month => {
+        const option = document.createElement("option");
+        option.value = month;
+        option.textContent = month;
+        monthFilter.appendChild(option);
+    });
+}
+
+function filterTable() {
+    const schoolFilter = document.getElementById("schoolFilter").value;
+    const monthFilter = document.getElementById("monthFilter").value;
+    const tableBody = document.getElementById("table-body");
+    const tr = tableBody.getElementsByTagName("tr");
+
+    for (let i = 0; i < tr.length; i++) {
+        const schoolCell = tr[i].getElementsByTagName("td")[1];
+        const monthCell = tr[i].getElementsByTagName("td")[3];
+        
+        const schoolMatch = (schoolFilter === "" || schoolCell.textContent === schoolFilter);
+        const monthMatch = (monthFilter === "" || monthCell.textContent === monthFilter);
+
+        if (schoolMatch && monthMatch) {
+            tr[i].style.display = "";
+        } else {
+            tr[i].style.display = "none";
+        }
+    }
+    calculateTotal();
+}
+
+function calculateTotal() {
+    const tableBody = document.getElementById("table-body");
+    const rows = tableBody.getElementsByTagName("tr");
+    let total = 0;
+
+    for (let i = 0; i < rows.length; i++) {
+        if (rows[i].style.display !== "none") {
+            const amountCell = rows[i].getElementsByTagName("td")[5];
+            if (amountCell) {
+                const amount = parseFloat(amountCell.textContent.replace(/,/g, ''));
+                if (!isNaN(amount)) {
+                    total += amount;
+                }
+            }
+        }
+    }
+    
+    document.getElementById('totalAmount').textContent = ${total.toLocaleString('en-US')} ကျပ်;
+}
