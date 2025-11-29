@@ -83,7 +83,7 @@ body {
     /* 1. Font size 3x larger */
     font-size: 2em; 
     /* 2. Color to Gold */
-    color: #ff0000;
+    color: #00ff00;
     text-shadow: 1px 1px 2px rgba(0,0,0,0.5); /* Add shadow for better readability */
 }
 @keyframes marquee {
@@ -213,4 +213,5 @@ body {
     #bill-table td:last-child { border-bottom: none; }
     #bill-table td:before { content: attr(data-label); font-weight: 700; color: var(--primary-color); white-space: nowrap; margin-right: 15px; }
 }
+
 
