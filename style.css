@@ -34,7 +34,7 @@ body {
     justify-content: space-between;
     align-items: center;
     text-align: center;
-    padding: 25px;
+    padding: 15px;
     border-radius: 12px;
     margin-bottom: 10px;
     background: var(--header-bg-gradient);
@@ -245,5 +245,6 @@ body {
     #bill-table td:last-child { border-bottom: none; }
     #bill-table td:before { content: attr(data-label); font-weight: 700; color: var(--primary-color); white-space: nowrap; margin-right: 15px; }
 }
+
 
 
