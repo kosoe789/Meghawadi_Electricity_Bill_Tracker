@@ -1,7 +1,12 @@
 document.addEventListener('DOMContentLoaded', () => {
-    formatInitialAmounts();
-    populateFilters();
-    calculateTotal();
+    // This function will now run first to populate the dropdowns
+    populateFilters(); 
+    
+    // This function will format the numbers in the table
+    formatInitialAmounts(); 
+    
+    // This function will calculate the total amount correctly on page load
+    calculateTotal(); 
 });
 
 function formatInitialAmounts() {
@@ -10,7 +15,10 @@ function formatInitialAmounts() {
     for (let i = 0; i < rows.length; i++) {
         const amountCell = rows[i].getElementsByTagName("td")[5];
         if (amountCell) {
+            // Keep the original number in a data attribute for calculation
             const amount = parseFloat(amountCell.textContent);
+            amountCell.setAttribute('data-amount', amount); 
+            // Display the formatted number
             amountCell.textContent = amount.toLocaleString('en-US');
         }
     }
@@ -21,15 +29,21 @@ function populateFilters() {
     const rows = tableBody.getElementsByTagName("tr");
     const schoolFilter = document.getElementById("schoolFilter");
     const monthFilter = document.getElementById("monthFilter");
+    
+    // Use Sets to automatically handle unique values
     const schools = new Set();
     const months = new Set();
 
     for (let i = 0; i < rows.length; i++) {
         const schoolName = rows[i].getElementsByTagName("td")[1].textContent;
         const monthName = rows[i].getElementsByTagName("td")[3].textContent;
-        schools.add(schoolName);
-        months.add(monthName);
+        if (schoolName) schools.add(schoolName);
+        if (monthName) months.add(monthName);
     }
+
+    // Clear existing options except the first one ("All")
+    schoolFilter.length = 1; 
+    monthFilter.length = 1;
 
     schools.forEach(school => {
         const option = document.createElement("option");
@@ -65,7 +79,8 @@ function filterTable() {
             tr[i].style.display = "none";
         }
     }
-    calculateTotal();
+    // Recalculate total after filtering
+    calculateTotal(); 
 }
 
 function calculateTotal() {
@@ -74,10 +89,12 @@ function calculateTotal() {
     let total = 0;
 
     for (let i = 0; i < rows.length; i++) {
+        // Only calculate for visible rows
         if (rows[i].style.display !== "none") {
             const amountCell = rows[i].getElementsByTagName("td")[5];
             if (amountCell) {
-                const amount = parseFloat(amountCell.textContent.replace(/,/g, ''));
+                // Use the original, unformatted number from the data attribute for accurate calculation
+                const amount = parseFloat(amountCell.getAttribute('data-amount')); 
                 if (!isNaN(amount)) {
                     total += amount;
                 }
@@ -85,5 +102,6 @@ function calculateTotal() {
         }
     }
     
+    // Display the final total, formatted with commas
     document.getElementById('totalAmount').textContent = ${total.toLocaleString('en-US')} ကျပ်;
 }
