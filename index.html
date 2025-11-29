@@ -1,64 +1,87 @@
-<footer class="footer-notes">
-        <div class="notes-container">
-            <h4>မီတာခ နှုန်းထားများ နှင့် တွက်ချက်ပုံ နမူနာ</h4>
-            <div class="notes-grid">
-                <div class="rate-table">
-                    <p><strong>သုံးစွဲယူနစ် အဆင့် နှင့် နှုန်းထား (တစ်ယူနစ်)</strong></p>
-                    <ul>
-                        <li><span>1 – 50 ယူနစ်</span><span>50 ကျပ်</span></li>
-                        <li><span>51 – 100 ယူနစ်</span><span>100 ကျပ်</span></li>
-                        <li><span>101 – 200 ယူနစ်</span><span>150 ကျပ်</span></li>
-                        <li><span>201 ယူနစ် နှင့် အထက်</span><span>300 ကျပ်</span></li>
-                    </ul>
-                </div>
-                <div class="calculation-table">
-                     <p><strong>တွက်ချက်ပုံနမူနာ (ဥပမာ: ၃၉၁ ယူနစ်)</strong></p>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>အဆင့်</th>
-                                <th>ယူနစ်</th>
-                                <th>နှုန်းထား</th>
-                                <th>ကျသင့်ငွေ</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>အဆင့် (၁)</td>
-                                <td>50</td>
-                                <td>50 Ks</td>
-                                <td>2,500 Ks</td>
-                            </tr>
-                            <tr>
-                                <td>အဆင့် (၂)</td>
-                                <td>50</td>
-                                <td>100 Ks</td>
-                                <td>5,000 Ks</td>
-                            </tr>
-                            <tr>
-                                <td>အဆင့် (၃)</td>
-                                <td>100</td>
-                                <td>150 Ks</td>
-                                <td>15,000 Ks</td>
-                            </tr>
-                            <tr>
-                                <td>အဆင့် (၄)</td>
-                                <td>191</td>
-                                <td>300 Ks</td>
-                                <td>57,300 Ks</td>
-                            </tr>
-                            <tr class="total-row">
-                                <td colspan="3">စုစုပေါင်း (၃၉၁ ယူနစ်)</td>
-                                <td>79,800 Ks</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
+<!DOCTYPE html>
+<html lang="my">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>လျှပ်စစ်မီတာဘေလ်စာရင်း</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Padauk:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <img src="https://i.imgur.com/P3oA49g.png" alt="Logo" class="logo">
+            <div class="header-text">
+                <h1>ရန်ကုန်တိုင်းဒေသကြီး - စမ်းချောင်းမြို့နယ်</h1>
+                <h2>မေဃဝတီကျောင်းတိုက်</h2>
+                <h3>လျှပ်စစ်မီတာဘေလ်စာရင်း</h3>
+            </div>
+        </header>
+
+        <div class="summary-bar">
+            <span>ပြသထားသော စာရင်းစုစုပေါင်း ဘေလ်ပမာဏ: </span>
+            <span id="totalAmount">0 ကျပ်</span>
+        </div>
+
+        <div class="filter-container">
+            <div class="filter-group">
+                <label for="schoolFilter">ကျောင်းဆောင်အလိုက်ရှာရန်:</label>
+                <select id="schoolFilter" onchange="filterTable()">
+                    <option value="">ကျောင်းအားလုံး</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label for="monthFilter">လအလိုက်ရှာရန်:</label>
+                <select id="monthFilter" onchange="filterTable()">
+                    <option value="">လအားလုံး</option>
+                </select>
             </div>
         </div>
-    </footer>
 
-    <!-- === THIS LINE IS THE FIX === -->
-    <script src="./script.js"></script>
+        <div class="table-wrapper">
+            <table id="bill-table">
+                <thead>
+                    <tr>
+                        <th>စဉ်</th>
+                        <th>ကျောင်း</th>
+                        <th>မီတာအမှတ်</th>
+                        <th>ရွေးချယ်ထားသောလ</th>
+                        <th>သုံးစွဲယူနစ်</th>
+                        <th>ဘေလ်ပမာဏ (ကျပ်)</th>
+                    </tr>
+                </thead>
+                <tbody id="table-body">
+                    <tr>
+                        <td data-label="စဉ်">1</td>
+                        <td data-label="ကျောင်း">သုံးထပ်ကျောင်းဆောင်</td>
+                        <td data-label="မီတာအမှတ်">E-25805</td>
+                        <td data-label="ရွေးချယ်ထားသောလ">ဇူလိုင်</td>
+                        <td data-label="သုံးစွဲယူနစ်">2,486</td>
+                        <td data-label="ဘေလ်ပမာဏ (ကျပ်)">621500</td>
+                    </tr>
+                    <tr>
+                        <td data-label="စဉ်">2</td>
+                        <td data-label="ကျောင်း">နှစ်ထပ်ကျောင်းဆောင်</td>
+                        <td data-label="မီတာအမှတ်">1611785438</td>
+                        <td data-label="ရွေးချယ်ထားသောလ">ဇူလိုင်</td>
+                        <td data-label="သုံးစွဲယူနစ်">1,676</td>
+                        <td data-label="ဘေလ်ပမာဏ (ကျပ်)">419000</td>
+                    </tr>
+                    <tr>
+                        <td data-label="စဉ်">3</td>
+                        <td data-label="ကျောင်း">ရွှေဥမင်ကျောင်း</td>
+                        <td data-label="မီတာအမှတ်">375-018271</td>
+                        <td data-label="ရွေးချယ်ထားသောလ">ဩဂုတ်</td>
+                        <td data-label="သုံးစွဲယူနစ်">881</td>
+                        <td data-label="ဘေလ်ပမာဏ (ကျပ်)">220250</td>
+                    </tr>
+                    <!-- Add more data rows here as needed -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <script src="script.js"></script>
 </body>
 </html>
