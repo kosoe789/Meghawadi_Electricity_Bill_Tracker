@@ -7,41 +7,40 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Padauk:wght@400;700&display=swap" rel="stylesheet">
-    <!-- This links to your stylesheet -->
     <link rel="stylesheet" href="./style.css">
 </head>
 <body>
-    <!-- Main container for the entire page content -->
     <div class="container">
-        <!-- Header Section with Logos and Titles -->
+        <!-- Header Section with New Images -->
         <header class="header">
-            <img src="https://i.imgur.com/P3oA49g.png" alt="Logo Left" class="logo">
+            <!-- ဘယ်ဘက်ပုံကို ဘုရားပုံတော်ဖြင့် အစားထိုးထားသည် -->
+            <img src="https://i.imgur.com/gO1gY1H.jpg" alt="Buddha Image" class="logo">
+            
             <div class="header-text">
                 <h1>ရန်ကုန်တိုင်းဒေသကြီး - စမ်းချောင်းမြို့နယ်</h1>
                 <h2>မေဃဝတီကျောင်းတိုက်</h2>
                 <h3>လျှပ်စစ်မီတာဘေလ်စာရင်း</h3>
             </div>
-            <img src="https://i.imgur.com/P3oA49g.png" alt="Logo Right" class="logo">
+            
+            <!-- ညာဘက်ပုံကို ဆရာတော်ဘုရားကြီးပုံဖြင့် အစားထိုးထားသည် -->
+            <img src="https://i.imgur.com/rV3gY3b.jpg" alt="Monk Image" class="logo">
         </header>
 
-        <!-- Container for controls like the marquee and total amount display -->
+        <!-- Controls Container with Marquee and Total -->
         <div class="controls-container">
-            <!-- Marquee for donation message -->
             <div class="marquee-container">
-                <p class="marquee-text">ဦးကျော် + ဒေါ်မီးမီး၊ ဆင်မလိုက်ရပ်ကွက်၊ ကြည့်မြင်တိုင်မြို့နယ်မှ လစဉ်လျှပ်စစ် အလင်းကုသိုလ် ပြုကြပါသည်။</p>
+                <p class="marquee-text">(ဦးကျော် + ဒေါ်မီးမီး၊ ဆင်မလိုက်ရပ်ကွက်၊ ကြည့်မြင်တိုင်မြို့နယ်မှ လစဉ်လျှပ်စစ် အလင်းကုသိုလ် ပြုကြပါသည်။)</p>
             </div>
-            <!-- Total amount display -->
             <div class="total-display">
                 <span class="total-label">စုစုပေါင်း ဘေလ်ပမာဏ: </span>
                 <strong id="totalAmount">0 ကျပ်</strong>
             </div>
         </div>
 
-        <!-- Wrapper for the main data table -->
+        <!-- Main Data Table Wrapper -->
         <div class="table-wrapper">
             <table id="bill-table">
                 <thead>
-                    <!-- Main table header row -->
                     <tr>
                         <th>စဉ်</th>
                         <th>နှစ်</th>
@@ -51,30 +50,16 @@
                         <th>သုံးစွဲယူနစ်</th>
                         <th>ဘေလ်ပမာဏ (ကျပ်)</th>
                     </tr>
-                    <!-- Filter row with dropdowns -->
                     <tr class="filter-row">
                         <td></td>
-                        <td>
-                            <select id="yearFilter" onchange="filterTable()">
-                                <option value="">နှစ်အားလုံး</option>
-                            </select>
-                        </td>
-                        <td>
-                            <select id="schoolFilter" onchange="filterTable()">
-                                <option value="">ကျောင်းအားလုံး</option>
-                            </select>
-                        </td>
+                        <td><select id="yearFilter" onchange="filterTable()"><option value="">နှစ်အားလုံး</option></select></td>
+                        <td><select id="schoolFilter" onchange="filterTable()"><option value="">ကျောင်းအားလုံး</option></select></td>
                         <td></td>
-                        <td>
-                            <select id="monthFilter" onchange="filterTable()">
-                                <option value="">လအားလုံး</option>
-                            </select>
-                        </td>
+                        <td><select id="monthFilter" onchange="filterTable()"><option value="">လအားလုံး</option></select></td>
                         <td></td>
                         <td></td>
                     </tr>
                 </thead>
-                <!-- Table body where data from Google Sheets will be loaded -->
                 <tbody id="table-body">
                     <tr>
                         <td colspan="7" class="loading-cell">ဒေတာများ ရယူနေပါသည်...</td>
@@ -84,12 +69,11 @@
         </div>
     </div>
 
-    <!-- Footer section for additional notes and calculation examples -->
+    <!-- Footer Section -->
     <footer class="footer-notes">
         <div class="notes-container">
             <h4>မီတာခ နှုန်းထားများ နှင့် တွက်ချက်ပုံ နမူနာ</h4>
             <div class="notes-grid">
-                <!-- Rate Table -->
                 <div class="rate-table">
                     <p><strong>သုံးစွဲယူနစ် အဆင့် နှင့် နှုန်းထား (တစ်ယူနစ်)</strong></p>
                     <ul>
@@ -99,7 +83,6 @@
                         <li><span>201 ယူနစ် နှင့် အထက်</span><span>300 ကျပ်</span></li>
                     </ul>
                 </div>
-                <!-- Calculation Example Table -->
                 <div class="calculation-table">
                      <p><strong>တွက်ချက်ပုံနမူနာ (ဥပမာ: ၃၉၁ ယူနစ်)</strong></p>
                     <table>
@@ -147,7 +130,6 @@
         </div>
     </footer>
 
-    <!-- This links to your JavaScript file -->
     <script src="./script.js"></script>
 </body>
 </html>
