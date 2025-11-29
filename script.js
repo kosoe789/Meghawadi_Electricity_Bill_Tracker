@@ -1,50 +1,51 @@
+// Wait for the entire HTML document to be fully loaded and parsed
 document.addEventListener('DOMContentLoaded', () => {
-    // This function will now run first to populate the dropdowns
-    populateFilters(); 
+    // Step 1: Populate the dropdown filters with data from the table and predefined lists
+    populateFilters();
     
-    // This function will format the numbers in the table
-    formatInitialAmounts(); 
+    // Step 2: Format numbers and prepare data for calculation
+    prepareTableData(); 
     
-    // This function will calculate the total amount correctly on page load
+    // Step 3: Calculate the initial total amount
     calculateTotal(); 
 });
 
-function formatInitialAmounts() {
-    const tableBody = document.getElementById("table-body");
-    const rows = tableBody.getElementsByTagName("tr");
-    for (let i = 0; i < rows.length; i++) {
-        const amountCell = rows[i].getElementsByTagName("td")[5];
-        if (amountCell) {
-            // Keep the original number in a data attribute for calculation
-            const amount = parseFloat(amountCell.textContent);
-            amountCell.setAttribute('data-amount', amount); 
-            // Display the formatted number
-            amountCell.textContent = amount.toLocaleString('en-US');
-        }
-    }
-}
-
+/**
+ * Reads data from the HTML table for schools and uses a predefined list for months
+ * to populate the dropdown filters.
+ */
 function populateFilters() {
     const tableBody = document.getElementById("table-body");
+    if (!tableBody) return; // Exit if table body doesn't exist
+
     const rows = tableBody.getElementsByTagName("tr");
     const schoolFilter = document.getElementById("schoolFilter");
     const monthFilter = document.getElementById("monthFilter");
     
-    // Use Sets to automatically handle unique values
-    const schools = new Set();
-    const months = new Set();
+    // --- MONTHS ---
+    // Use a predefined, complete list of all 12 months.
+    const allMonths = [
+        "ဇန်နဝါရီ", "ဖေဖော်ဝါရီ", "မတ်", "ဧပြီ", "မေ", "ဇွန်",
+        "ဇူလိုင်", "ဩဂုတ်", "စက်တင်ဘာ", "အောက်တိုဘာ", "နိုဝင်ဘာ", "ဒီဇင်ဘာ"
+    ];
 
+    // --- SCHOOLS ---
+    // Use a Set to automatically get unique school names from the table.
+    const schools = new Set();
     for (let i = 0; i < rows.length; i++) {
-        const schoolName = rows[i].getElementsByTagName("td")[1].textContent;
-        const monthName = rows[i].getElementsByTagName("td")[3].textContent;
-        if (schoolName) schools.add(schoolName);
-        if (monthName) months.add(monthName);
+        const cells = rows[i].getElementsByTagName("td");
+        if (cells.length > 1) { 
+            const schoolName = cells[1].textContent.trim();
+            if (schoolName) schools.add(schoolName);
+        }
     }
 
-    // Clear existing options except the first one ("All")
-    schoolFilter.length = 1; 
-    monthFilter.length = 1;
+    // --- POPULATE DROPDOWNS ---
+    // Clear previous options
+    schoolFilter.innerHTML = '<option value="">ကျောင်းအားလုံး</option>';
+    monthFilter.innerHTML = '<option value="">လအားလုံး</option>';
 
+    // Add all unique school names to the school dropdown
     schools.forEach(school => {
         const option = document.createElement("option");
         option.value = school;
@@ -52,7 +53,8 @@ function populateFilters() {
         schoolFilter.appendChild(option);
     });
 
-    months.forEach(month => {
+    // Add all 12 months to the month dropdown
+    allMonths.forEach(month => {
         const option = document.createElement("option");
         option.value = month;
         option.textContent = month;
@@ -60,41 +62,70 @@ function populateFilters() {
     });
 }
 
+/**
+ * Prepares table data by formatting numbers for display and storing
+ * original values for calculation.
+ */
+function prepareTableData() {
+    const tableBody = document.getElementById("table-body");
+    if (!tableBody) return;
+
+    const rows = tableBody.getElementsByTagName("tr");
+    for (let i = 0; i < rows.length; i++) {
+        const cells = rows[i].getElementsByTagName("td");
+        if (cells.length > 5) {
+            const amountCell = cells[5];
+            const rawAmount = parseFloat(amountCell.textContent.replace(/,/g, ''));
+            if (!isNaN(rawAmount)) {
+                amountCell.setAttribute('data-amount', rawAmount);
+                amountCell.textContent = rawAmount.toLocaleString('en-US');
+            }
+        }
+    }
+}
+
+/**
+ * Filters the table rows based on the selected dropdown values.
+ */
 function filterTable() {
     const schoolFilter = document.getElementById("schoolFilter").value;
     const monthFilter = document.getElementById("monthFilter").value;
     const tableBody = document.getElementById("table-body");
+    if (!tableBody) return;
+
     const tr = tableBody.getElementsByTagName("tr");
 
     for (let i = 0; i < tr.length; i++) {
-        const schoolCell = tr[i].getElementsByTagName("td")[1];
-        const monthCell = tr[i].getElementsByTagName("td")[3];
-        
-        const schoolMatch = (schoolFilter === "" || schoolCell.textContent === schoolFilter);
-        const monthMatch = (monthFilter === "" || monthCell.textContent === monthFilter);
+        const cells = tr[i].getElementsByTagName("td");
+        if (cells.length > 3) {
+            const schoolCell = cells[1];
+            const monthCell = cells[3];
+            
+            const schoolMatch = (schoolFilter === "" || schoolCell.textContent.trim() === schoolFilter);
+            const monthMatch = (monthFilter === "" || monthCell.textContent.trim() === monthFilter);
 
-        if (schoolMatch && monthMatch) {
-            tr[i].style.display = "";
-        } else {
-            tr[i].style.display = "none";
+            tr[i].style.display = (schoolMatch && monthMatch) ? "" : "none";
         }
     }
-    // Recalculate total after filtering
     calculateTotal(); 
 }
 
+/**
+ * Calculates the total amount of all VISIBLE rows in the table.
+ */
 function calculateTotal() {
     const tableBody = document.getElementById("table-body");
+    if (!tableBody) return;
+
     const rows = tableBody.getElementsByTagName("tr");
     let total = 0;
 
     for (let i = 0; i < rows.length; i++) {
-        // Only calculate for visible rows
         if (rows[i].style.display !== "none") {
-            const amountCell = rows[i].getElementsByTagName("td")[5];
-            if (amountCell) {
-                // Use the original, unformatted number from the data attribute for accurate calculation
-                const amount = parseFloat(amountCell.getAttribute('data-amount')); 
+            const cells = rows[i].getElementsByTagName("td");
+            if (cells.length > 5) {
+                const amountCell = cells[5];
+                const amount = parseFloat(amountCell.getAttribute('data-amount'));
                 if (!isNaN(amount)) {
                     total += amount;
                 }
@@ -102,6 +133,5 @@ function calculateTotal() {
         }
     }
     
-    // Display the final total, formatted with commas
-    document.getElementById('totalAmount').textContent = ${total.toLocaleString('en-US')} ကျပ်;
+    document.getElementById('totalAmount').textContent = `${total.toLocaleString('en-US')} ကျပ်`;
 }
