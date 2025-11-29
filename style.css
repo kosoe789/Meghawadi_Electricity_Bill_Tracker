@@ -6,11 +6,9 @@
     --text-color: #212529;
     --border-color: #e0e0e0;
     --header-bg-gradient: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
-    /* === UPDATED: Table header color to Purple === */
-    --table-header-bg: #6a1b9a; /* Deep Purple */
+    --table-header-bg: #6a1b9a; /* Purple */
     --total-label-color: #d32f2f;
-    /* === NEW: Gold color for marquee === */
-    --gold-color: #ff00bf; 
+    --gold-color: #FFD700; 
     --shadow: 0 6px 18px rgba(0,0,0,0.1);
 }
 
@@ -43,12 +41,15 @@ body {
     color: white;
 }
 
+/* Updated Logo Style for New Images */
 .logo {
-    width: 70px;
-    height: 70px;
-    background: rgba(255,255,255,0.1);
+    width: 80px;
+    height: 80px;
     border-radius: 50%;
-    padding: 5px;
+    object-fit: cover;
+    background: #fff;
+    border: 3px solid var(--gold-color);
+    padding: 2px;
 }
 
 .header-text h1, .header-text h2, .header-text h3 { margin: 0; font-weight: 700; }
@@ -67,24 +68,22 @@ body {
     border-radius: 10px;
 }
 
-/* === UPDATED MARQUEE STYLE === */
+/* Marquee Style */
 .marquee-container {
     flex-grow: 1;
     overflow: hidden;
     white-space: nowrap;
     position: relative;
-    padding: 10px 0; /* Add padding for larger font */
+    padding: 10px 0;
 }
 .marquee-text {
     display: inline-block;
     padding-left: 100%;
     animation: marquee 25s linear infinite;
     font-weight: 700;
-    /* 1. Font size 3x larger */
     font-size: 2em; 
-    /* 2. Color to Gold */
-    color:#00ff00;
-    text-shadow: 1px 1px 2px rgba(0,0,0,0.5); /* Add shadow for better readability */
+    color: #ff0000; /* Red color as requested in example */
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
 }
 @keyframes marquee {
     0%   { transform: translateX(0); }
@@ -111,18 +110,15 @@ body {
 .table-wrapper { overflow-x: auto; }
 #bill-table { width: 100%; border-collapse: collapse; }
 
-/* === UPDATED: Center all table text === */
 #bill-table th, #bill-table td {
     padding: 15px;
     border: 1px solid var(--border-color);
     white-space: nowrap;
     font-weight: 700;
-    /* Center text horizontally and vertically */
     text-align: center;
     vertical-align: middle;
 }
 
-/* === UPDATED: Table header color to Purple === */
 #bill-table th {
     background-color: var(--table-header-bg);
     color: white;
@@ -213,8 +209,3 @@ body {
     #bill-table td:last-child { border-bottom: none; }
     #bill-table td:before { content: attr(data-label); font-weight: 700; color: var(--primary-color); white-space: nowrap; margin-right: 15px; }
 }
-
-
-
-
-
