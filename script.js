@@ -5,6 +5,7 @@ const YEAR_TO_GID_MAP = {
     '2026': '1109851076',  // Example: GID for 2026 sheet
     '2027': '1838808029',
     '2028': '1795083309',
+    '2029': '774505065',
     // Add other years and GIDs here
 };
 // -------------------
@@ -142,3 +143,4 @@ function calculateTotal() {
     });
     document.getElementById('totalAmount').textContent = `${total.toLocaleString('en-US')} ကျပ်`;
 }
+
