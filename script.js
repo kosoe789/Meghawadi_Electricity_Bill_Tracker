@@ -1,34 +1,25 @@
 // --- CONFIGURATION ---
-// 1. Replace 'YOUR_SHEET_ID' with your actual Google Sheet ID.
-const SHEET_ID = '1wgIlwrkbgiajopkWul-_y5ghskVwjxmiS-SVKR2DGJI'; 
-
-// 2. IMPORTANT: Map your Year to its correct GID from your sheet's URL.
-//    Find the GID in your browser's address bar for each sheet.
+const SHEET_ID = '1wgIlwrkbgiajopkWul-_y5ghskVwjxmiS-SVKR2DGJI'; // Replace with your Sheet ID
 const YEAR_TO_GID_MAP = {
-    '2025': '0',          // Example: GID for 2025 sheet is '0'
+    '2025': '0',
     '2026': '1109851076',  // Example: GID for 2026 sheet
     '2027': '1838808029',
     '2028': '1795083309',
-    // Example: GID for 2027 sheet
-    // Add more years and their GIDs here
+    // Add other years and GIDs here
 };
 // -------------------
 
 document.addEventListener('DOMContentLoaded', () => {
     const yearSelector = document.getElementById('yearSheetSelector');
     
-    // Populate the year selector dropdown
     Object.keys(YEAR_TO_GID_MAP).forEach(year => {
         yearSelector.add(new Option(year, year));
     });
 
-    // Add event listener to fetch data when a year is selected
     yearSelector.addEventListener('change', () => {
-        const selectedYear = yearSelector.value;
-        fetchDataForYear(selectedYear);
+        fetchDataForYear(yearSelector.value);
     });
 
-    // Optional: Automatically load the first year's data on page load
     if (Object.keys(YEAR_TO_GID_MAP).length > 0) {
         const firstYear = Object.keys(YEAR_TO_GID_MAP)[0];
         yearSelector.value = firstYear;
@@ -38,10 +29,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 function fetchDataForYear(year) {
     const gid = YEAR_TO_GID_MAP[year];
-    if (!gid) {
-        console.error(`GID for year ${year} not found in map.`);
-        return;
-    }
+    if (!gid) return;
 
     const tableBody = document.getElementById('table-body');
     tableBody.innerHTML = `<tr><td colspan="6" class="loading-cell">ဒေတာများ ရယူနေပါသည်...</td></tr>`;
@@ -58,7 +46,7 @@ function fetchDataForYear(year) {
         })
         .catch(error => {
             console.error('Error fetching Google Sheet:', error);
-            tableBody.innerHTML = `<tr><td colspan="6" class="loading-cell" style="color: red;">Error: Google Sheet မှ ဒေတာများ ရယူ၍မရပါ။ Sheet ID နှင့် Share setting ကိုစစ်ဆေးပါ။</td></tr>`;
+            tableBody.innerHTML = `<tr><td colspan="6" class="loading-cell" style="color: red;">Error: Google Sheet မှ ဒေတာများ ရယူ၍မရပါ။</td></tr>`;
         });
 }
 
@@ -119,6 +107,7 @@ function populateFilters(data) {
     allMonths.forEach(month => monthFilter.add(new Option(month, month)));
 }
 
+// === THIS IS THE MOST IMPORTANT FIX ===
 function filterTable() {
     const schoolFilter = document.getElementById("schoolFilter").value;
     const monthFilter = document.getElementById("monthFilter").value;
@@ -129,13 +118,18 @@ function filterTable() {
         const schoolCell = tr[i].cells[1];
         const monthCell = tr[i].cells[3];
         
+        // Normalize both strings before comparing to solve the "ဩ" character issue
+        const normalizedMonthCell = monthCell.textContent.trim().normalize('NFC');
+        const normalizedMonthFilter = monthFilter.normalize('NFC');
+
         const schoolMatch = (schoolFilter === "" || schoolCell.textContent.trim() === schoolFilter);
-        const monthMatch = (monthFilter === "" || monthCell.textContent.trim() === monthFilter);
+        const monthMatch = (monthFilter === "" || normalizedMonthCell === normalizedMonthFilter);
 
         tr[i].style.display = (schoolMatch && monthMatch) ? "" : "none";
     }
     calculateTotal(); 
 }
+// =====================================
 
 function calculateTotal() {
     const rows = document.querySelectorAll("#table-body tr");
