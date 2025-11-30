@@ -7,3 +7,5 @@ const SHEET_ID = '1wgIlwrkbgiajopkWul-_y5ghskVwjxmiS-SVKR2DGJI';
     // Add more years and their GIDs here
 
     အပေါ် Id များကို js file မှာထည့်ပါ။ GID တွေကို ဆိုင်ရာ online sheet ရဲ့  link တွေရဲ့ လိပ်စာရဲ့ နောက်ဆုံး ဂဏန်းတွေကို ယူပါ။
+
+    တနှစ်ထပ်တိုးချင်တိုင်း sheet တရွက်ထပ်ယူပါ။
