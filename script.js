@@ -1,6 +1,9 @@
 // --- CONFIGURATION ---
 const SHEET_ID = '1wgIlwrkbgiajopkWul-_y5ghskVwjxmiS-SVKR2DGJI'; // Replace with your Sheet ID
 const YEAR_TO_GID_MAP = {
+    '2022': '1642381318',
+    '2023': '1642381318',
+    '2024': '1642381318',
     '2025': '0',
     '2026': '1109851076',  // Example: GID for 2026 sheet
     '2027': '1838808029',
@@ -142,5 +145,6 @@ function calculateTotal() {
     });
     document.getElementById('totalAmount').textContent = `${total.toLocaleString('en-US')} ကျပ်`;
 }
+
 
 
